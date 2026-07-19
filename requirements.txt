@@ -1,0 +1,34 @@
+# PRC Factsheet Automation - Windows build dependencies
+#
+# IMPORTANT: Use 64-bit Python 3.11 specifically for this project.
+# torch/numpy/easyocr do not yet ship pre-built Windows wheels for very new
+# Python versions (3.13, 3.14, ...) - pip falls back to compiling from
+# source on those, which fails without a C++ compiler installed. This is
+# not a version you need to change system-wide: install Python 3.11
+# alongside whatever Python you already have, and build_exe.bat will use
+# it via the "py -3.11" launcher automatically.
+#
+# Install with:
+#   pip install -r requirements.txt
+
+pymupdf>=1.24
+pillow>=10.0
+opencv-python>=4.9
+numpy==1.26.4
+pandas>=2.0
+openpyxl>=3.1
+easyocr>=1.7
+torch>=2.2
+torchvision>=0.17
+pyinstaller>=6.6
+
+# Notes:
+# - numpy is pinned below 2.0 because several torch/easyocr releases in
+#   circulation are not yet compatible with numpy 2.x. If you specifically
+#   need numpy 2.x, upgrade torch/easyocr to versions that support it first,
+#   then test the app before building the .exe.
+# - torch is the CPU build by default (matches Main_PRC.py's
+#   easyocr.Reader(["en"], gpu=False)). If you have an NVIDIA GPU and want
+#   GPU acceleration, install the CUDA build of torch instead - see
+#   https://pytorch.org/get-started/locally/ - and change gpu=False to
+#   gpu=True in Main_PRC.py's load_easyocr().
